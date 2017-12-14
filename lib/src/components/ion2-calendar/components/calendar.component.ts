@@ -86,7 +86,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   _showToggleButtons = true;
   _showMonthPicker = true;
   monthOpt: CalendarMonth;
-  pins: number[];
+  pins: number[] = [];
 
   @Input() format: string = defaults.DATE_FORMAT;
   @Input() type: 'string' | 'js-date' | 'moment' | 'time' | 'object' = 'string';
@@ -100,7 +100,9 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
     if (this.monthOpt && this.monthOpt.original) {
       this.monthOpt = this.createMonth(this.monthOpt.original.time);
     }
-    this.pins = this.createPins(value.pins);
+    if (value.hasOwnProperty('pins')) {
+      this.pins = this.createPins(value.pins);
+    }
   }
 
   get options(): CalendarComponentOptions {

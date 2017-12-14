@@ -15,6 +15,7 @@ var CalendarComponent = /** @class */ (function () {
         this._calendarMonthValue = [null, null];
         this._showToggleButtons = true;
         this._showMonthPicker = true;
+        this.pins = [];
         this.format = defaults.DATE_FORMAT;
         this.type = 'string';
         this.readonly = false;
@@ -33,7 +34,9 @@ var CalendarComponent = /** @class */ (function () {
             if (this.monthOpt && this.monthOpt.original) {
                 this.monthOpt = this.createMonth(this.monthOpt.original.time);
             }
-            this.pins = this.createPins(value.pins);
+            if (value.hasOwnProperty('pins')) {
+                this.pins = this.createPins(value.pins);
+            }
         },
         enumerable: true,
         configurable: true

@@ -271,9 +271,11 @@ ion-calendar-month {
   .cal-color {
     @include month-color(cal-color);
   }
+
   .light-blue-grey {
     @include month-color(light-blue-grey);
   }
+
   .purple {
     @include month-color(purple);
   }

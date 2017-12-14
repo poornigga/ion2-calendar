@@ -1,54 +1,52 @@
-import { Component } from '@angular/core';
-import { ModalController, NavController } from 'ionic-angular';
+import { Component } from "@angular/core";
+import { ModalController, NavController } from "ionic-angular";
 
 import {
   CalendarComponentOptions,
   CalendarModalOptions,
   CalendarModal,
   DayConfig
-} from 'ion2-calendar'
+} from "ion2-calendar";
 
-import * as moment from 'moment'
+import * as moment from "moment";
 @Component({
-  selector: 'page-home',
-  templateUrl: 'home.html'
+  selector: "page-home",
+  templateUrl: "home.html"
 })
 export class HomePage {
-
   days: Array<any> = [];
-  date = moment(moment().format('YYYY-MM-DD')).add(1, 'month');
+  date = moment(moment().format("YYYY-MM-DD")).add(1, "month");
   dateMulti = [];
-  dateRangeObj: { from: string; to: string; };
-  format = 'YYYY-MM-DD';
+  dateRangeObj: { from: string; to: string };
+  format = "YYYY-MM-DD";
   optionsBasic: CalendarComponentOptions = {
-    color: 'light-blue-grey',
-    pins: ['2018-01-11', '2018-1-17']
+    color: "light-blue-grey",
+    pins: ["2018-01-11", "2018-1-17"]
   };
-  // pins: string[] = ['2017-12-5', '2017-12-10'];
-  optionsMulti: CalendarComponentOptions = {
-    pickMode: 'multi',
-    defaultSubtitle: 'heh',
-    weekdays: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
-    weekStart: 1,
-    color: 'light-blue-grey',
-    pins: ['2018-01-11', '2018-1-17']
 
+  optionsMulti: CalendarComponentOptions = {
+    pickMode: "multi",
+    defaultSubtitle: "heh",
+    weekdays: ["D", "L", "M", "X", "J", "V", "S"],
+    weekStart: 1,
+    color: "light-blue-grey",
+    pins: ["2018-01-11", "2018-1-17"]
   };
   optionsRange: CalendarComponentOptions = {
     from: new Date(2017, 10, 1),
     to: new Date(2018, 11, 31),
-    pickMode: 'range',
-    color: 'light-blue-grey',
-    pins: ['2018-01-11', '2018-1-17']
+    pickMode: "range",
+    color: "light-blue-grey",
+    pins: ["2018-01-11", "2018-1-17"]
   };
 
-  constructor(public navCtrl: NavController,
-    public modalCtrl: ModalController) {
-
-  }
+  constructor(
+    public navCtrl: NavController,
+    public modalCtrl: ModalController
+  ) {}
 
   addM() {
-    this.date = this.date.clone().add(5, 'days');
+    this.date = this.date.clone().add(5, "days");
   }
 
   onChange($event) {
@@ -57,22 +55,27 @@ export class HomePage {
 
   monthChange($event) {
     console.log($event);
-    let date = moment($event.newMonth.string, 'YYYY-MM-DD');
+    let date = moment($event.newMonth.string, "YYYY-MM-DD");
     setTimeout(() => {
       const newPot = {
         daysConfig: [
           {
             date: date.toDate(),
-            marked: true,
+            marked: true
           },
           {
-            date: date.clone().add(1, 'd').toDate(),
-            marked: true,
-          }
-          ,
+            date: date
+              .clone()
+              .add(1, "d")
+              .toDate(),
+            marked: true
+          },
           {
-            date: date.clone().add(2, 'd').toDate(),
-            marked: true,
+            date: date
+              .clone()
+              .add(2, "d")
+              .toDate(),
+            marked: true
           }
         ]
       };
@@ -81,14 +84,14 @@ export class HomePage {
         ...this.optionsBasic,
         ...newPot
       };
-    }, 300)
+    }, 300);
   }
 
   basic() {
     const options = {
-      title: 'BASIC',
+      title: "BASIC",
       canBackwardsSelected: true,
-      color: 'cal-color',
+      color: "cal-color",
       doneIcon: true,
       closeIcon: true
     };
@@ -101,16 +104,16 @@ export class HomePage {
     myCalendar.onDidDismiss((date, type) => {
       console.log(date);
       console.log(type);
-    })
+    });
   }
 
   multi() {
     const options = {
-      pickMode: 'multi',
-      title: 'MULTI',
-      color: 'purple',
-      pins: ['2018-01-11', '2018-1-17'],
-      defaultDates: [moment(), moment().add(1, 'd'), moment().add(2, 'd')]
+      pickMode: "multi",
+      title: "MULTI",
+      color: "purple",
+      pins: ["2018-01-11", "2018-1-17"],
+      defaultDates: [moment(), moment().add(1, "d"), moment().add(2, "d")]
     };
 
     let myCalendar = this.modalCtrl.create(CalendarModal, {
@@ -121,17 +124,16 @@ export class HomePage {
 
     myCalendar.onDidDismiss(date => {
       console.log(date);
-    })
+    });
   }
 
   dateRange() {
     const options: CalendarModalOptions = {
-      pickMode: 'range',
-      title: 'RANGE',
+      pickMode: "range",
+      title: "RANGE",
       canBackwardsSelected: true,
-      color: 'danger',
-      pins: ['2018-01-11', '2018-1-17']
-
+      color: "danger",
+      pins: ["2018-01-11", "2018-1-17"]
     };
 
     let myCalendar = this.modalCtrl.create(CalendarModal, {
@@ -161,13 +163,12 @@ export class HomePage {
     myCalendar.onDidDismiss(date => {
       console.log(date);
     });
-
   }
 
   setCssClass() {
     const options: CalendarModalOptions = {
-      cssClass: 'my-class',
-      pickMode: 'range',
+      cssClass: "my-class",
+      pickMode: "range",
       autoDone: true
     };
 
@@ -185,7 +186,7 @@ export class HomePage {
   optional() {
     const options: CalendarModalOptions = {
       from: new Date(2017, 1, 1),
-      to: new Date(2017, 2, 5),
+      to: new Date(2017, 2, 5)
     };
 
     let myCalendar = this.modalCtrl.create(CalendarModal, {
@@ -202,7 +203,7 @@ export class HomePage {
   disableWeekdays() {
     const options: CalendarModalOptions = {
       disableWeeks: [0, 6],
-      canBackwardsSelected: true,
+      canBackwardsSelected: true
     };
 
     let myCalendar = this.modalCtrl.create(CalendarModal, {
@@ -218,10 +219,10 @@ export class HomePage {
 
   local() {
     const options: CalendarModalOptions = {
-      monthFormat: 'yyyy 年 MM 月',
-      weekdays: ['天', '一', '二', '三', '四', '五', '六'],
+      monthFormat: "yyyy 年 MM 月",
+      weekdays: ["天", "一", "二", "三", "四", "五", "六"],
       weekStart: 1,
-      color: 'light',
+      color: "light",
       defaultDate: new Date()
     };
 
@@ -242,23 +243,23 @@ export class HomePage {
       _daysConfig.push({
         date: new Date(2017, 0, i + 1),
         subTitle: `$${i + 1}`
-      })
+      });
     }
     _daysConfig.push({
       date: new Date(2017, 1, 1),
       disable: true,
-      subTitle: 'disable',
+      subTitle: "disable"
     });
     _daysConfig.push({
       date: new Date(2017, 0, 1),
-      subTitle: 'New Year\'s',
-      cssClass: 'my-day'
+      subTitle: "New Year's",
+      cssClass: "my-day"
     });
     const options: CalendarModalOptions = {
       from: new Date(2017, 0, 1),
       to: new Date(2017, 11.1),
       daysConfig: _daysConfig,
-      cssClass: 'my-cal',
+      cssClass: "my-cal"
     };
 
     let myCalendar = this.modalCtrl.create(CalendarModal, {
@@ -271,6 +272,4 @@ export class HomePage {
       console.log(date);
     });
   }
-
-
 }
