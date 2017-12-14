@@ -5,13 +5,18 @@ import {
   Output,
   EventEmitter,
   forwardRef
-} from '@angular/core';
+} from "@angular/core";
 
-import { CalendarMonth, CalendarModalOptions, CalendarComponentOptions, CalendarDay } from '../calendar.model'
+import {
+  CalendarMonth,
+  CalendarModalOptions,
+  CalendarComponentOptions,
+  CalendarDay
+} from "../calendar.model";
 import { CalendarService } from "../services/calendar.service";
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 
-import * as moment from 'moment';
+import * as moment from "moment";
 import { defaults, pickModes } from "../config";
 
 export const ION_CAL_VALUE_ACCESSOR: any = {
@@ -21,7 +26,7 @@ export const ION_CAL_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-  selector: 'ion-calendar',
+  selector: "ion-calendar",
   providers: [ION_CAL_VALUE_ACCESSOR],
   template: `
     <div class="title">
@@ -75,13 +80,12 @@ export const ION_CAL_VALUE_ACCESSOR: any = {
                                  [month]="monthOpt">
       </ion-calendar-month-picker>
     </ng-template>
-  `,
+  `
 })
 export class CalendarComponent implements ControlValueAccessor, OnInit {
-
   _d: CalendarModalOptions;
   _options: CalendarComponentOptions;
-  _view = 'days';
+  _view = "days";
   _calendarMonthValue: any[] = [null, null];
   _showToggleButtons = true;
   _showMonthPicker = true;
@@ -89,7 +93,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   pins: number[] = [];
 
   @Input() format: string = defaults.DATE_FORMAT;
-  @Input() type: 'string' | 'js-date' | 'moment' | 'time' | 'object' = 'string';
+  @Input() type: "string" | "js-date" | "moment" | "time" | "object" = "string";
   @Input() readonly = false;
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   @Output() monthChange: EventEmitter<any> = new EventEmitter();
@@ -100,7 +104,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
     if (this.monthOpt && this.monthOpt.original) {
       this.monthOpt = this.createMonth(this.monthOpt.original.time);
     }
-    if (value.hasOwnProperty('pins')) {
+    if (value && value.hasOwnProperty("pins")) {
       this.pins = this.createPins(value.pins);
     }
   }
@@ -109,15 +113,13 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
     return this._options;
   }
 
-  _onChanged: Function = () => { };
+  _onChanged: Function = () => {};
 
-  _onTouched: Function = () => { };
+  _onTouched: Function = () => {};
 
-  constructor(public calSvc: CalendarService) {
-  }
+  constructor(public calSvc: CalendarService) {}
 
-  ionViewDidLoad() {
-  }
+  ionViewDidLoad() {}
 
   ngOnInit() {
     this.initOpt();
@@ -162,20 +164,22 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
       return [];
     }
 
-    let sortedPins = ps.sort().map((item) => {
-      return moment(item, 'YYYY-MM-DD').toDate().getTime();
+    let sortedPins = ps.sort().map(item => {
+      return moment(item, "YYYY-MM-DD")
+        .toDate()
+        .getTime();
     });
 
     return [sortedPins[0], sortedPins[sortedPins.length - 1]];
   }
 
   switchView() {
-    this._view = this._view === 'days' ? 'month' : 'days';
+    this._view = this._view === "days" ? "month" : "days";
     return this._view;
   }
 
   prev() {
-    if (this._view === 'days') {
+    if (this._view === "days") {
       this.backMonth();
     } else {
       this.prevYear();
@@ -183,7 +187,7 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   }
 
   next() {
-    if (this._view === 'days') {
+    if (this._view === "days") {
       this.nextMonth();
     } else {
       this.nextYear();
@@ -191,17 +195,23 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   }
 
   prevYear() {
-    const backTime = moment(this.monthOpt.original.time).subtract(1, 'year').valueOf();
+    const backTime = moment(this.monthOpt.original.time)
+      .subtract(1, "year")
+      .valueOf();
     this.monthOpt = this.createMonth(backTime);
   }
 
   nextYear() {
-    const nextTime = moment(this.monthOpt.original.time).add(1, 'year').valueOf();
+    const nextTime = moment(this.monthOpt.original.time)
+      .add(1, "year")
+      .valueOf();
     this.monthOpt = this.createMonth(nextTime);
   }
 
   nextMonth() {
-    const nextTime = moment(this.monthOpt.original.time).add(1, 'months').valueOf();
+    const nextTime = moment(this.monthOpt.original.time)
+      .add(1, "months")
+      .valueOf();
     this.monthChange.emit({
       oldMonth: this.calSvc.multiFormat(this.monthOpt.original.time),
       newMonth: this.calSvc.multiFormat(nextTime)
@@ -210,12 +220,14 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   }
 
   canNext() {
-    if (!this._d.to || this._view !== 'days') return true;
+    if (!this._d.to || this._view !== "days") return true;
     return this.monthOpt.original.time < moment(this._d.to).valueOf();
   }
 
   backMonth() {
-    const backTime = moment(this.monthOpt.original.time).subtract(1, 'months').valueOf();
+    const backTime = moment(this.monthOpt.original.time)
+      .subtract(1, "months")
+      .valueOf();
     this.monthChange.emit({
       oldMonth: this.calSvc.multiFormat(this.monthOpt.original.time),
       newMonth: this.calSvc.multiFormat(backTime)
@@ -224,13 +236,15 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   }
 
   canBack() {
-    if (!this._d.from || this._view !== 'days') return true;
+    if (!this._d.from || this._view !== "days") return true;
     return this.monthOpt.original.time > moment(this._d.from).valueOf();
   }
 
   monthOnSelect(month: number) {
-    this._view = 'days';
-    const newMonth = moment(this.monthOpt.original.time).month(month).valueOf();
+    this._view = "days";
+    const newMonth = moment(this.monthOpt.original.time)
+      .month(month)
+      .valueOf();
     this.monthChange.emit({
       oldMonth: this.calSvc.multiFormat(this.monthOpt.original.time),
       newMonth: this.calSvc.multiFormat(newMonth)
@@ -271,7 +285,6 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
         break;
 
       default:
-
     }
   }
 
@@ -280,18 +293,18 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
     if (isNext && this.canNext()) {
       this.nextMonth();
     } else if (!isNext && this.canBack()) {
-      this.backMonth()
+      this.backMonth();
     }
   }
 
   _writeValue(value: any) {
     if (!value) return;
     switch (this._d.pickMode) {
-      case 'single':
+      case "single":
         this._calendarMonthValue[0] = this._createCalendarDay(value);
         break;
 
-      case 'range':
+      case "range":
         if (value.from) {
           this._calendarMonthValue[0] = this._createCalendarDay(value.from);
         }
@@ -300,10 +313,10 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
         }
         break;
 
-      case 'multi':
+      case "multi":
         if (Array.isArray(value)) {
           this._calendarMonthValue = value.map(e => {
-            return this._createCalendarDay(e)
+            return this._createCalendarDay(e);
           });
         } else {
           this._calendarMonthValue = [];
@@ -311,13 +324,12 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
         break;
 
       default:
-
     }
   }
 
   _createCalendarDay(value: any): CalendarDay {
     let date;
-    if (this.type === 'string') {
+    if (this.type === "string") {
       date = moment(value, this.format);
     } else {
       date = moment(value);
@@ -328,22 +340,21 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   _handleType(value: number): any {
     let date = moment(value);
     switch (this.type) {
-      case 'string':
+      case "string":
         return date.format(this.format);
-      case 'js-date':
+      case "js-date":
         return date.toDate();
-      case 'moment':
+      case "moment":
         return date;
-      case 'time':
+      case "time":
         return date.valueOf();
-      case 'object':
+      case "object":
         return date.toObject();
     }
     return date;
   }
 
   _monthFormat(date: any): string {
-    return moment(date).format(this._d.monthFormat.replace(/y/g, 'Y'))
+    return moment(date).format(this._d.monthFormat.replace(/y/g, "Y"));
   }
-
 }

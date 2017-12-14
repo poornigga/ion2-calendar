@@ -1,7 +1,7 @@
-import { OnInit, EventEmitter } from '@angular/core';
-import { CalendarMonth, CalendarModalOptions, CalendarComponentOptions, CalendarDay } from '../calendar.model';
+import { OnInit, EventEmitter } from "@angular/core";
+import { CalendarMonth, CalendarModalOptions, CalendarComponentOptions, CalendarDay } from "../calendar.model";
 import { CalendarService } from "../services/calendar.service";
-import { ControlValueAccessor } from '@angular/forms';
+import { ControlValueAccessor } from "@angular/forms";
 export declare const ION_CAL_VALUE_ACCESSOR: any;
 export declare class CalendarComponent implements ControlValueAccessor, OnInit {
     calSvc: CalendarService;
@@ -14,7 +14,7 @@ export declare class CalendarComponent implements ControlValueAccessor, OnInit {
     monthOpt: CalendarMonth;
     pins: number[];
     format: string;
-    type: 'string' | 'js-date' | 'moment' | 'time' | 'object';
+    type: "string" | "js-date" | "moment" | "time" | "object";
     readonly: boolean;
     onChange: EventEmitter<any>;
     monthChange: EventEmitter<any>;
